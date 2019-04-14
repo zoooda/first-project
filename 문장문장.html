@@ -6,15 +6,13 @@
       window.onerror = new Function("return true");
       document.onselectstart = new Function("return false");
 
-      nx = 0; // x-coordinate of center
-      ny = 0; // y-coordinate of center
+      nx = 0;        // x-coordinate of center
+      ny = 0;        // y-coordinate of center
       xm = 99999999; // x-coordinate of mouse
       ym = 99999999; // y-coordinate of mouse
       O = 0;
 
       /////////////
-      //VS = 1;
-      //S = 5000;
       W = 660;
       H = 600;
       FX = 1.2;
@@ -26,24 +24,14 @@
          o.innerHTML = txt;
          document.getElementById("a").appendChild(o);
 
-         
          this.obj = o.style;
          this.x = x;
          this.y = y;
          this.init_x = x;
          this.init_y = y;
 
-         this.S = D ? -45 : -10; // this.S의 값은 D가 참이면 45, 거짓이면 -10이다.
+         this.S = D ? -45 : -10;  // this.S의 값은 D가 참이면 45, 거짓이면 -10이다.
          this.VS = D ? 1.8 : 0.1; // this.VS의 값은 D가 참이면 1, 거짓이면 0.2이다.
-         /* 
-            결론
-               D가 참이면
-                  this.S = 45;
-                  this.VS = 1;
-               D가 거짓이면
-                  this.S = -10;
-                  this.VS = 0.2;
-         */
 
          this.anim = function () {
             with(this) {
@@ -62,36 +50,32 @@
          setTimeout("run()", 0);
       }
 
+      // Update coordinate of mouse
       document.onmousemove = function (e) {
-         // Update coordinate of mouse
          if (window.event) e = window.event;
          xm = (e.x || e.clientX || 99999999) - nx;
          ym = (e.y || e.clientY || 99999999) - ny;
       }
 
+      // Update coordinate of center
       function resize() {
-         // Update coordinate of center
          nx = document.body.offsetWidth / 2;
          ny = document.body.offsetHeight / 2;
       }
       onresize = resize;
 
-      function fontWidth(word) {
-         // arial font
-         var S =
-            "a68b68c68d68e68f31g68h68i31j31k68l31m108n68o68p68q68r39s68t39u68v50w90x68y68z68A90B90C90D90E90F78G98H90I28J59K90L68M108N90O98P90Q98R90S90T68U90V90W130X68Y90Z68'30.42!29?68-41/41=72";
-         var l = word.length;
-         var s = -1000;
-         var x = 1000;
-         var c = 0;
-         for (i = 0; i < l; i++) {
-            c = word.charAt(i);
+      // return the witdh of given word based on arial font
+      function fontWidth(word, baseWidth) {
+         var S = "a68b68c68d68e68f31g68h68i31j31k68l31m108n68o68p68q68r39s68t39u68v50w90x68y68z68A90B90C90D90E90F78G98H90I28J59K90L68M108N90O98P90Q98R90S90T68U90V90W130X68Y90Z68'30.42!29?68-41/41=72";
+         var c, x, i = 0;
+         while (i < word.length) {
+            c = word.charAt(i++);
             x = S.indexOf(c);
-            if (c >= "0" && c <= "9") s += 69;
-            else if (x >= 0) s += parseInt(S.substring(x + 1, x + 4));
-            else s += 68;
+                 if (x == -1)              baseWidth += 68;
+            else if (c >= "0" && c <= "9") baseWidth += 69;
+            else                           baseWidth += parseInt(S.substr(x + 1, 3));
          }
-         return s / 10;
+         return baseWidth / 10;
       }
 
       onload = function () {
@@ -119,31 +103,32 @@
          y = 0;
          D = true;
 
-         for (var sentence of T)
+         for (var i = 0; i < T.length; i++)
          {
-            var word_list = sentence.split(" ");
+            var word_list = T[i].split(" ");
             var setence_width = -10;
             var sP = 0; // what is it?
-            
 
-            
+            D = (i < 5);
+
+            // calculate the width of this sentences
             for (var word of word_list)
-               setence_width += fontWidth(word);
+               setence_width += fontWidth(word, -1000);
 
             // calculate sP
             if (word_list.length > 0)
                sP = (W - setence_width) / (word_list.length - 1);
-            
+
             // create each word in this sentence
             for (var word of word_list)
             {
+               console.log(word);
                O = new createObject(O, -(W / 2) + x, -(H / 2) + y, word, D);
-               x += FX * (fontWidth(word) + sP);
+               x += FX * (fontWidth(word, -1000) + sP);
             }
 
-            y += 25;
             x = 0;
-            D = !D;
+            y += 25;
          }
          
          run();
