@@ -13,8 +13,6 @@
       O = 0;
 
       /////////////
-      //VS = 1;
-      //S = 5000;
       W = 200;
       H = 400;
       FX = 1.2;
@@ -26,7 +24,6 @@
          o.innerHTML = txt;
          document.getElementById("a").appendChild(o);
 
-         
          this.obj = o.style;
          this.x = x;
          this.y = y;
@@ -122,7 +119,7 @@
             var setence_width = -10;
             var sP = 0; // what is it?
             
-            D=(i<15)
+            D = (i < 15);
 
             for (var word of word_list)
                setence_width += fontWidth(word);
@@ -140,7 +137,6 @@
 
             y += 25;
             x = 0;
-            D = !D;
          }
          
          run();
@@ -154,20 +150,20 @@
       #a span {
          font-size: 15px
       }
-
    </style>
 </head>
 
 <body>
-   <div style="position: absolute; font-size: 20px;"> 편집타이포그래피2019   스크린매체와 타이포 </div>
+   <div style="position: absolute; font-size: 20px;"> 편집타이포그래피2019 스크린매체와 타이포 </div>
    
-   <div id="a" style="position:absolute; left:55%; top: 50%;  white-space: nowrap;" class="font"></div>
-   
-   <div style="position:absolute; left:45%; right:20%; top:13%; white-space: normal; line-height: 160%;" class="font">
-      컴퓨터를 이용한 많은 결과물들은 컴퓨터라는 매게를 통해 작업물과 체험자가 소통하면서 발생하는 결과의 재미에 집중한다.
-      아마 이때 체험자는 본인이 결과물을 통제하는 통제자라고 생각하기 쉽다. 그러나 이 체험자는 실제 제작자에 의해 통제된 상황을 의도에 따라 경험하고 있을 뿐이다. 이러한 생각에서 착안 해, '읽히지 않는 문장'을 제작했다.
-      '읽히지 않는 문장'은 동영상 Symmetry에 나오는 문장을 인용하여 웹사이트를 통해 글을 볼 수 있게 만든 작업물이다. 처음 볼 때는 이 글을 읽을 수 있을 것처럼 보이고, 읽는 과정에서 소통하며 무언가 발생하게 될 결과물에 대해 기대하게 된다. 그러나 실제 체험자가 글을 읽으려 한다면 단어들이 도망가 문장을 파괴한다. 그 결과 체험자는 글을 읽지 못하게 되고 글을 읽는 행위를 포기하게 된다. 즉, 상호 작용 할 수 있다는 스크린 매체의 특징을 미끼로 상호작용을 포기한 작업물인 것이다.</div>
-
+   <div style="position: absolute; left: 45%; right: 20%; top: 13%; white-space: normal; line-height: 160%;" class="font">
+      <div id="a" style="position: absolute; left: 25%; top: 50%;  white-space: nowrap;" class="font"></div>
+      <p>
+         컴퓨터를 이용한 많은 결과물들은 컴퓨터라는 매게를 통해 작업물과 체험자가 소통하면서 발생하는 결과의 재미에 집중한다.
+         아마 이때 체험자는 본인이 결과물을 통제하는 통제자라고 생각하기 쉽다. 그러나 이 체험자는 실제 제작자에 의해 통제된 상황을 의도에 따라 경험하고 있을 뿐이다. 이러한 생각에서 착안 해, '읽히지 않는 문장'을 제작했다.
+         '읽히지 않는 문장'은 동영상 Symmetry에 나오는 문장을 인용하여 웹사이트를 통해 글을 볼 수 있게 만든 작업물이다. 처음 볼 때는 이 글을 읽을 수 있을 것처럼 보이고, 읽는 과정에서 소통하며 무언가 발생하게 될 결과물에 대해 기대하게 된다. 그러나 실제 체험자가 글을 읽으려 한다면 단어들이 도망가 문장을 파괴한다. 그 결과 체험자는 글을 읽지 못하게 되고 글을 읽는 행위를 포기하게 된다. 즉, 상호 작용 할 수 있다는 스크린 매체의 특징을 미끼로 상호작용을 포기한 작업물인 것이다.
+      </p>
+   </div>
    <div style="position: absolute; top: 13%; left: 5%;">
    <img src="can not be readed sentence 1.png" style="width: 35%; height: auto;">
       </div>
@@ -175,7 +171,7 @@
    <img src="can not be readed sentence 2.png" style="width: 35%; height: auto;">
       </div>
    <div style="position: absolute; top: 13%; left: 85%;">
-      읽히지 않는 문장<p>
+      읽히지 않는 문장<br>
       주다빈
    </div>
 </body>
