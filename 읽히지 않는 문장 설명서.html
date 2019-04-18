@@ -1,0 +1,183 @@
+<HTML>
+
+<head>
+   <title>만들 수 없는 문장</title>
+   <script type="text/javascript">
+      window.onerror = new Function("return true");
+      document.onselectstart = new Function("return false");
+
+      nx = 0; // x-coordinate of center
+      ny = 0; // y-coordinate of center
+      xm = 99999999; // x-coordinate of mouse
+      ym = 99999999; // y-coordinate of mouse
+      O = 0;
+
+      /////////////
+      //VS = 1;
+      //S = 5000;
+      W = 200;
+      H = 400;
+      FX = 1.2;
+      /////////////
+
+      function createObject(parent, x, y, txt, D) {
+         o = document.createElement("span");
+         o.style.position = 'absolute';
+         o.innerHTML = txt;
+         document.getElementById("a").appendChild(o);
+
+         
+         this.obj = o.style;
+         this.x = x;
+         this.y = y;
+         this.init_x = x;
+         this.init_y = y;
+
+         this.S = D ? 45 : -10; // this.S의 값은 D가 참이면 45, 거짓이면 -10이다.
+         this.VS = D ? 1.2 : 0.2; // this.VS의 값은 D가 참이면 1, 거짓이면 0.2이다.
+         /* 
+            결론
+               D가 참이면
+                  this.S = 45;
+                  this.VS = 1;
+               D가 거짓이면
+                  this.S = -10;
+                  this.VS = 0.2;
+         */
+
+         this.anim = function () {
+            with(this) {
+               dx = xm - x;
+               dy = ym - y;
+               d = Math.sqrt(dx * dx + dy * dy) + 1;
+               obj.left = x = x - S * dx / d + (init_x - x) * VS;
+               obj.top = y = y - S * dy / d + (init_y - y) * VS;
+               if (parent) parent.anim();
+            }
+         }
+      }
+
+      function run() {
+         O.anim();
+         setTimeout("run()", 0);
+      }
+
+      document.onmousemove = function (e) {
+         // Update coordinate of mouse
+         if (window.event) e = window.event;
+         xm = (e.x || e.clientX || 99999999) - nx;
+         ym = (e.y || e.clientY || 99999999) - ny;
+      }
+
+      function resize() {
+         // Update coordinate of center
+         nx = document.body.offsetWidth / 2;
+         ny = document.body.offsetHeight / 2;
+      }
+      onresize = resize;
+
+      function fontWidth(word) {
+         // arial font
+         var S =
+            "a68b68c68d68e68f31g68h68i31j31k68l31m108n68o68p68q68r39s68t39u68v50w90x68y68z68A90B90C90D90E90F78G98H90I28J59K90L68M108N90O98P90Q98R90S90T68U90V90W130X68Y90Z68'30.42!29?68-41/41=72";
+         var l = word.length;
+         var s = -1000;
+         var x = 1000;
+         var c = 0;
+         for (i = 0; i < l; i++) {
+            c = word.charAt(i);
+            x = S.indexOf(c);
+            if (c >= "0" && c <= "9") s += 69;
+            else if (x >= 0) s += parseInt(S.substring(x + 1, x + 4));
+            else s += 68;
+         }
+         return s / 10;
+      }
+
+      onload = function () {
+         T = ["당신이 보고 행동하는 것이 언제나 주변에 영향을 끼치고",
+            "있다는 것을 잊지 마시오. 당신이 보내는 눈빛 하나,",
+            "손짓 하나가 모두 주변으로 퍼져나가고 있다.",
+            "의도 하지 않고 했던 모든 행동이 상황과 순간속에",
+            "어울려 주변에 큰 영향으로 다가갈 수 있다. 무심코",
+            "던진 돌에 개구리가 맞아 죽는 다는 말을 잊지",
+            "마시오. 우리가 살아가는 오늘은 이 날을 살아가는",
+            "주체인 나와 어느 누군가의 우연에 의해 만들어진",
+            "순간임을 잊지 않는 것이 좋다. 불교에서는",
+            "인드라망이라 말하는 그물로 온 세상의 인간이 연결 되어",
+            "있다고 한다. 우리는 그 수많은 그물코 중에 하나이다.",
+            "언뜻 보면 하찮게 보일 수 있지만 그물코 하나 하나",
+            "각각의 존재로 그 전체는 그물이 된다. 하찮으면서",
+            "중요한 존재. 지금 당신이 하는 행동을 모두 조심 하시오.",
+         ];
+
+         resize();
+         x = 0;
+         y = 0;
+         D = true;
+
+         for (var i = 0; i < T.length; i++)
+         {
+            var word_list = T[i].split(" ");
+            var setence_width = -10;
+            var sP = 0; // what is it?
+            
+            D=(i<15)
+
+            for (var word of word_list)
+               setence_width += fontWidth(word);
+
+            // calculate sP
+            if (word_list.length > 0)
+               sP = (W - setence_width) / (word_list.length - 1);
+            
+            // create each word in this sentence
+            for (var word of word_list)
+            {
+               O = new createObject(O, -(W / 2) + x, -(H / 2) + y, word, D);
+               x += FX * (fontWidth(word) + sP);
+            }
+
+            y += 25;
+            x = 0;
+            D = !D;
+         }
+         
+         run();
+      }
+   </script>
+   <style>
+      .font {
+         font-family: 'Noto Sans', sans;
+      }
+
+      #a span {
+         font-size: 15px
+      }
+
+   </style>
+</head>
+
+<body>
+   <div style="position: absolute; font-size: 20px;"> 편집타이포그래피2019   스크린매체와 타이포 </div>
+   
+   <div id="a" style="position:absolute; left:55%; top: 50%;  white-space: nowrap;" class="font"></div>
+   
+   <div style="position:absolute; left:45%; right:20%; top:13%; white-space: normal; line-height: 160%;" class="font">
+      컴퓨터를 이용한 많은 결과물들은 컴퓨터라는 매게를 통해 작업물과 체험자가 소통하면서 발생하는 결과의 재미에 집중한다.
+      아마 이때 체험자는 본인이 결과물을 통제하는 통제자라고 생각하기 쉽다. 그러나 이 체험자는 실제 제작자에 의해 통제된 상황을 의도에 따라 경험하고 있을 뿐이다. 이러한 생각에서 착안 해, '읽히지 않는 문장'을 제작했다.
+      '읽히지 않는 문장'은 동영상 Symmetry에 나오는 문장을 인용하여 웹사이트를 통해 글을 볼 수 있게 만든 작업물이다. 처음 볼 때는 이 글을 읽을 수 있을 것처럼 보이고, 읽는 과정에서 소통하며 무언가 발생하게 될 결과물에 대해 기대하게 된다. 그러나 실제 체험자가 글을 읽으려 한다면 단어들이 도망가 문장을 파괴한다. 그 결과 체험자는 글을 읽지 못하게 되고 글을 읽는 행위를 포기하게 된다. 즉, 상호 작용 할 수 있다는 스크린 매체의 특징을 미끼로 상호작용을 포기한 작업물인 것이다.</div>
+
+   <div style="position: absolute; top: 13%; left: 5%;">
+   <img src="can not be readed sentence 1.png" style="width: 35%; height: auto;">
+      </div>
+   <div style="position: absolute; top: 53%; left: 5%;">
+   <img src="can not be readed sentence 2.png" style="width: 35%; height: auto;">
+      </div>
+   <div style="position: absolute; top: 13%; left: 85%;">
+      읽히지 않는 문장<p>
+      주다빈
+   </div>
+</body>
+
+</html>
